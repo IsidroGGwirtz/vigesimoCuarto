@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<style>
+		.noVer{display:none;}
+	</style>
+</head>
+<body onload="checkCookie()">
+
+	<input type="button" value="Cerrar " id="cerrarAyuda">
+	<div id="mostrarAyuda">
+		<h3>Función setcookie</h3>
+			<code>
+				function setCookie(cname, cvalue, exdays) {<br>
+				  var d = new Date();<br>
+				  d.setTime(d.getTime() + (exdays*24*60*60*1000));<br>
+				  var expires = "expires="+ d.toUTCString();<br>
+				  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";<br>
+				} <br>
+		
+			</code>
+		<h3>Función getCookie</h3>
+			<code>
+				function getCookie(cname) {<br>
+				  var name = cname + "=";<br>
+				  var decodedCookie = decodeURIComponent(document.cookie);<br>
+				  var ca = decodedCookie.split(';');<br>
+				  for(var i = 0; i <ca.length; i++) {<br>
+					var c = ca[i];<br>
+					while (c.charAt(0) == ' ') {<br>
+					  c = c.substring(1);<br>
+					}<br>
+					if (c.indexOf(name) == 0) {<br>
+					  return c.substring(name.length, c.length);<br>
+					}<br>
+				  }<br>
+				  return "";<br>
+				} <br>
+			</code>
+	</div>
+	<script>
+		function setCookie(cname, cvalue, exdays) {
+		  var d = new Date();
+		  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+		  var expires = "expires="+d.toUTCString();
+		  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		}
+
+		function getCookie(cname) {
+		  var name = cname + "=";
+		  var ca = document.cookie.split(';');
+		  for(var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+			  c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+			  return c.substring(name.length, c.length);
+			}
+		  }
+		  return "";
+		}
+
+
+		//CUANDO RECARGO LA PÁGINA Y LE DOY A CERRAR, ME MUESTRA LA AYUDA, AUNQUE NO LLEGUE A 30 VECES. POR QUÉ?
+		document.getElementById("cerrarAyuda").addEventListener("click",cerrar);
+
+		//Las cookies se guardan en pares de nombre y valor como: username = John Doe.
+		function cerrar() {
+			var nomCookie = getCookie("Ayuda");
+				if (nomCookie == "" || nomCookie == null){
+					//SE CREA POR 1ª VEZ. NO? Y POR TANTO YA EXISTE. SU VALOR ES Cookie? De ahí: add("noVer")?
+					setCookie("Ayuda","Cookie", 30);
+					document.getElementById("mostrarAyuda").classList.add("noVer");
+				}
+				else	
+					document.getElementById("mostrarAyuda").classList.remove("noVer");
+			}
+				    
+		function checkCookie() {
+			var nomCookie = getCookie("Ayuda");
+				if (nomCookie != "" && nomCookie != null) {
+				document.getElementById("mostrarAyuda").classList.add("noVer");
+				}else {
+				document.getElementById("mostrarAyuda").classList.remove("noVer");
+			}
+		}
+
+		 /*Adapta el script anterior para crear una cookie que almacene el número de veces que se visita una página.
+ 		 Para ello, deberás crear/modificar una cookie a la que llamarás por ejemplo visitas de modo que cada vez que se abra/recargue la página lea dicha cookie, la incremente en uno y la vuelva a establecer.*/
+
+		var visitas=getCookie("visitas");
+		 if (visitas != ""){//POR QUÉ != ""? LA PRIMERA VEZ YA ES ""(nada).
+			visitas=parseInt(visitas);
+			setCookie("visitas",visitas+1,30);
+		  }else{
+			setCookie("visitas", 1, 30);
+		  }
+
+		 //llamada a la funcion para contar visitas
+   
+		//visitas=getCookie("visitas");
+  		contarvisitas(visitas);
+
+  		function contarvisitas(visitas) {
+		  if(visitas>30){
+			alert("El cuadro de ayuda se volverá a mostrar porque han pasado 30 días.");
+		  }
+		}
+
+	</script>
+</body>
+</html>
+
+ 
+ 
+
